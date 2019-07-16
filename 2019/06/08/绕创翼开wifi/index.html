@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="故名">
 <meta property="og:description" content="Overview 在一台长期开机的windows主机上用电信官网下载的NetKeeper客户端拨号。这台主机是连接了网线，并且能够访问内网资源的(例如：jwzx.cqupt.edu.cn) 在这台主机上搭一个ubuntu虚拟机，虚拟机需要有两块虚拟网卡，一块是nat，一块是桥接有线网卡 在ubuntu虚拟机上安装并配置pptpd 自动化(开机自启，断网检测，等脚本)  搭建步骤 硬件要求  一台空">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-16T11:46:48.227Z">
+<meta property="og:updated_time" content="2019-07-16T12:23:30.257Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="绕创翼开wifi">
 <meta name="twitter:description" content="Overview 在一台长期开机的windows主机上用电信官网下载的NetKeeper客户端拨号。这台主机是连接了网线，并且能够访问内网资源的(例如：jwzx.cqupt.edu.cn) 在这台主机上搭一个ubuntu虚拟机，虚拟机需要有两块虚拟网卡，一块是nat，一块是桥接有线网卡 在ubuntu虚拟机上安装并配置pptpd 自动化(开机自启，断网检测，等脚本)  搭建步骤 硬件要求  一台空">
@@ -360,21 +360,11 @@
 <h1 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h1><ul>
 <li><p>硬件要求</p>
 <ul>
-<li><p>一台空闲的物理机，要求能长期开机，并且放在固定的地方(比如宿舍)</p>
-<ul>
-<li><p>可以是你的台式机，也可以是你的空闲不用的旧笔记本。或者你可以淘宝工控机，便宜的200-300到手，性能弱，但是搭pptp可以运行。</p>
+<li><p>一台空闲的物理机，长期开机。</p>
 </li>
-<li><p>对物理机的性能要求很低，能带动windows和一个虚拟机就够了。物理机最低能够运行win7即可。运行win10的建议内存4G起步，cpu为：桌面版cpu 2代i3以上，移动标压和移动低压类比桌面版。</p>
+<li><p>有一块有线网卡，板载或usb转rj45</p>
 </li>
-</ul>
-</li>
-<li><p>有一块有线网卡，即RJ45接口的网卡，能够插网线的口，最好百兆起步。一般台式机都有，笔记本里面大部分轻薄本没有，需要自己买一个usb转rj45</p>
-</li>
-<li><p>一台路由器(宿舍里使用，咸鱼二手30块左右的就能用，路由器需要能够pptp拨号，tp-link的一般都行)     </p>
-<ul>
-<li>如果你不需要宿舍内使用，比如在宿舍里你通过笔记本连网线拨号，再开wifi给移动设备，那就不需要路由器。但有一台路由器会方便一点，手机要用wifi还要开电脑麻烦，况且够用的二手路由器也不贵，20-40的就能用。</li>
-<li>如果你已经有一块无线网卡(比如台式机有pcie无线网卡，或者旧笔记本本身就有无线网卡开热点)   那么你也不需要买路由器。具体操作下面有。</li>
-</ul>
+<li><p>一台路由器(支持vpn如pptp，tp-link的一般都行)     </p>
 </li>
 </ul>
 </li>
@@ -383,18 +373,17 @@
 <li>系统与软件<ul>
 <li>win7   或    win10</li>
 <li>NetKeeper客户端</li>
-<li>虚拟机软件（建议VMware，因为HyperV会和NetKeeper冲突，docker和WSL也是基于HyperV的也不要用）</li>
+<li>虚拟机或容器（不能是HyperV，因为HyperV会和NetKeeper冲突，docker和WSL都基于HyperV而无法使用）</li>
 <li>ubuntu16.04+ 镜像</li>
 </ul>
 </li>
-<li>windows镜像可以去<a href="https://msdn.itellyou.cn/" target="_blank" rel="noopener">MSDN我告诉你</a>下载，也可以在内网的<a href="http://software.redrock.team/repository/iso/windows/" target="_blank" rel="noopener">邮资源下载站系统镜像部分</a>下载，邮资源下载站的windows系统镜像全部来自msdn我告诉你</li>
+<li>windows镜像可以去<a href="https://msdn.itellyou.cn/" target="_blank" rel="noopener">MSDN我告诉你</a>下载，也可以在内网的<a href="http://software.redrock.team/repository/iso/windows/" target="_blank" rel="noopener">邮资源下载站系统镜像部分</a>下载(邮资源下载站的windows系统镜像全部来自msdn我告诉你)</li>
 <li>NetKeeper在<a href="http://cq.189.cn/college/home/resource.htm" target="_blank" rel="noopener">中国电信高校专区</a>下载最新版</li>
 <li>VMware请访问<a href="https://www.vmware.com/" target="_blank" rel="noopener">VMware官网首页</a>寻找下载链接</li>
 <li>ubuntu镜像下载途径<ul>
 <li>阿里云OPSX</li>
 <li><a href="http://software.redrock.team/repository/iso/linux/ubuntu/" target="_blank" rel="noopener">内网邮资源镜像站ubuntu镜像</a></li>
 <li><a href="http://mirrors.cqupt.edu.cn/ubuntu-releases/" target="_blank" rel="noopener">内网重邮镜像站</a></li>
-<li>注意，ubuntu选择server版，可以节省可观的性能。母机性能强随意</li>
 <li>ubuntu的apt源可以设置为重邮镜像源，<a href="http://mirrors.cqupt.edu.cn/ubuntu" target="_blank" rel="noopener">http://mirrors.cqupt.edu.cn/ubuntu</a></li>
 </ul>
 </li>
@@ -402,16 +391,13 @@
 </li>
 <li><p>装系统</p>
 <ul>
-<li>windows略</li>
-<li>虚拟机ubuntu略，自己找教程<ul>
-<li>物理机内存不够的，虚拟机内存设为512M甚至256M。不管物理机性能怎么样，cpu尽量多分配一些，可以尽量快一点，但给虚拟机的核心不要超过物理机cpu的核心数。</li>
+<li>windows</li>
+<li>虚拟机ubuntu</li>
 </ul>
 </li>
-</ul>
-</li>
-<li><p>虚拟机配置：</p>
+<li><p>虚拟机配置(Vmware示例)：</p>
 <ul>
-<li><p>在关机状态下(不可以是挂起)，用VMware给虚拟机加一块桥接网卡，并且设置这块网卡桥接到物理机有线网卡上。最后确保虚拟机有两块网卡，一个是和物理机的nat网卡，一个是桥接有线网卡（用来获得内网ip以供拨号）</p>
+<li><p>给虚拟机加一块桥接网卡，桥接到物理机有线网卡上。确保虚拟机有两块网卡，一个是nat网卡，一个是桥接有线网卡（用来获得内网ip以供拨号连接）</p>
 </li>
 <li><p>开启虚拟机</p>
 </li>
@@ -485,7 +471,7 @@
 <li><p>需要实现的</p>
 <ul>
 <li>开机自动设置路由表</li>
-<li>检测外部网络变化，如果网络不通就重启(比如我的物理机网络从netkeeper变为wifi，那么虚拟机的外网访问可能会出问题，需要重启)</li>
+<li>检测外部网络变化，如果网络不通则重启(如我的物理机网络从netkeeper变为wifi，那么虚拟机的外网访问可能会出问题，需要重启)</li>
 </ul>
 </li>
 </ul>
@@ -502,7 +488,7 @@
 <li><p>连wifi拨号，适用移动类设备(手机，平板），笔记本，台式机</p>
 <ul>
 <li>连接CQUPT或者其他接入内网的wifi</li>
-<li>vpn  类型设为pptp     服务器地址为上面提及的虚拟机桥接网卡ip    用户名密码上面也有说明。注意，如果你配置pptpd的时候设置了加密（见上文），那么客户端也需要设置加密。否则不要设置 <ul>
+<li>vpn  类型设为pptp     服务器地址为上面提及的虚拟机桥接网卡ip    用户名密码见上面配置。如果配置pptpd的时候设置了加密（见上文），那么客户端也需要设置加密。否则不要设置 <ul>
 <li>注，CQUPT这个热点校园内很多地方都有，但是连上了之后可能暂时无法拨号，这种情况下需要等一段时间(几分钟)或者重新连接。只要搜得到CQUPT并且连的上，那么就一定可以拨pptp。</li>
 </ul>
 </li>
@@ -517,7 +503,6 @@
 <li><p>路由器拨号</p>
 <ul>
 <li>连上路由器，进入管理员界面，tp-link的为网络参数页，其他的试试找一下wan口设置。设置为pptp拨号，拨号方式参考上面。</li>
-<li>连接成功后，所有设备只要连接了这个路由器的wifi，就可以直接访问外网而不需要在设备上拨号。</li>
 </ul>
 </li>
 </ul>
