@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="故名" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Overview 在一台长期开机的windows主机上用电信官网下载的NetKeeper客户端拨号。这台主机是连接了网线，并且能够访问内网资源的(例如：jwzx.cqupt.edu.cn) 在这台主机上搭一个ubuntu虚拟机，虚拟机需要有两块虚拟网卡，一块是nat，一块是桥接有线网卡 在ubuntu虚拟机上安装并配置pptpd 自动化(开机自启，断网检测，等脚本)  搭建步骤 硬件要求  一台空">
+<meta property="og:type" content="article">
+<meta property="og:title" content="绕创翼开wifi">
+<meta property="og:url" content="http://blog.levas.top/2019/06/08/绕创翼开wifi/index.html">
+<meta property="og:site_name" content="故名">
+<meta property="og:description" content="Overview 在一台长期开机的windows主机上用电信官网下载的NetKeeper客户端拨号。这台主机是连接了网线，并且能够访问内网资源的(例如：jwzx.cqupt.edu.cn) 在这台主机上搭一个ubuntu虚拟机，虚拟机需要有两块虚拟网卡，一块是nat，一块是桥接有线网卡 在ubuntu虚拟机上安装并配置pptpd 自动化(开机自启，断网检测，等脚本)  搭建步骤 硬件要求  一台空">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-16T12:23:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="绕创翼开wifi">
+<meta name="twitter:description" content="Overview 在一台长期开机的windows主机上用电信官网下载的NetKeeper客户端拨号。这台主机是连接了网线，并且能够访问内网资源的(例如：jwzx.cqupt.edu.cn) 在这台主机上搭一个ubuntu虚拟机，虚拟机需要有两块虚拟网卡，一块是nat，一块是桥接有线网卡 在ubuntu虚拟机上安装并配置pptpd 自动化(开机自启，断网检测，等脚本)  搭建步骤 硬件要求  一台空">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.levas.top/2019/06/08/绕创翼开wifi/">
+
+
+
+
+
+  <title>绕创翼开wifi | 故名</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6aade8a90e0acc7563f1357a2ea021c6";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">故名</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.levas.top/2019/06/08/绕创翼开wifi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="oakseed">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="故名">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">绕创翼开wifi</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-08T16:08:46+08:00">
+                2019-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/局域网打造计划/" itemprop="url" rel="index">
+                    <span itemprop="name">-[局域网打造计划]</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><ul>
+<li>在一台长期开机的windows主机上用电信官网下载的NetKeeper客户端拨号。这台主机是连接了网线，并且能够访问内网资源的(例如：jwzx.cqupt.edu.cn)</li>
+<li>在这台主机上搭一个ubuntu虚拟机，虚拟机需要有两块虚拟网卡，一块是nat，一块是桥接有线网卡</li>
+<li>在ubuntu虚拟机上安装并配置pptpd</li>
+<li>自动化(开机自启，断网检测，等脚本)</li>
+</ul>
+<h1 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h1><ul>
+<li><p>硬件要求</p>
+<ul>
+<li><p>一台空闲的物理机，长期开机。</p>
+</li>
+<li><p>有一块有线网卡，板载或usb转rj45</p>
+</li>
+<li><p>一台路由器(支持vpn如pptp，tp-link的一般都行)     </p>
+</li>
+</ul>
+</li>
+<li><p>环境准备</p>
+<ul>
+<li>系统与软件<ul>
+<li>win7   或    win10</li>
+<li>NetKeeper客户端</li>
+<li>虚拟机或容器（不能是HyperV，因为HyperV会和NetKeeper冲突，docker和WSL都基于HyperV而无法使用）</li>
+<li>ubuntu16.04+ 镜像</li>
+</ul>
+</li>
+<li>windows镜像可以去<a href="https://msdn.itellyou.cn/" target="_blank" rel="noopener">MSDN我告诉你</a>下载，也可以在内网的<a href="http://software.redrock.team/repository/iso/windows/" target="_blank" rel="noopener">邮资源下载站系统镜像部分</a>下载(邮资源下载站的windows系统镜像全部来自msdn我告诉你)</li>
+<li>NetKeeper在<a href="http://cq.189.cn/college/home/resource.htm" target="_blank" rel="noopener">中国电信高校专区</a>下载最新版</li>
+<li>VMware请访问<a href="https://www.vmware.com/" target="_blank" rel="noopener">VMware官网首页</a>寻找下载链接</li>
+<li>ubuntu镜像下载途径<ul>
+<li>阿里云OPSX</li>
+<li><a href="http://software.redrock.team/repository/iso/linux/ubuntu/" target="_blank" rel="noopener">内网邮资源镜像站ubuntu镜像</a></li>
+<li><a href="http://mirrors.cqupt.edu.cn/ubuntu-releases/" target="_blank" rel="noopener">内网重邮镜像站</a></li>
+<li>ubuntu的apt源可以设置为重邮镜像源，<a href="http://mirrors.cqupt.edu.cn/ubuntu" target="_blank" rel="noopener">http://mirrors.cqupt.edu.cn/ubuntu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>装系统</p>
+<ul>
+<li>windows</li>
+<li>虚拟机ubuntu</li>
+</ul>
+</li>
+<li><p>虚拟机配置(Vmware示例)：</p>
+<ul>
+<li><p>给虚拟机加一块桥接网卡，桥接到物理机有线网卡上。确保虚拟机有两块网卡，一个是nat网卡，一个是桥接有线网卡（用来获得内网ip以供拨号连接）</p>
+</li>
+<li><p>开启虚拟机</p>
+</li>
+<li><p>安装pptpd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install pptpd</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/pptpd.conf</p>
+<p>删除以下行的注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#localip 192.168.0.1</span><br><span class="line">#remoteip 192.168.0.234-238,192.168.0.245</span><br></pre></td></tr></table></figure>
+
+<p>变为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localip 192.168.0.1</span><br><span class="line">remoteip 192.168.0.234-238,192.168.0.245</span><br></pre></td></tr></table></figure>
+
+<p>解释：</p>
+<ul>
+<li>localip是vpn中ubuntu虚拟机的ip，remoteip是分配给连接vpn的设备的ip</li>
+</ul>
+</li>
+<li><p>配置/etc/ppp/pptpd-options</p>
+<p>注释以下两行。这两行是用来加密vpn的，但会对pptpd的运行有影响，可以关掉。如果你需要加密就不要注释。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">require-mschap-v2</span><br><span class="line">require-mppe-128</span><br></pre></td></tr></table></figure>
+
+<p>设置dns，以下两行可改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ms-dns 202.202.32.33</span><br><span class="line">ms-dns 114.114.114.114</span><br></pre></td></tr></table></figure>
+
+<p>202.202.32.33是内网dns，作为主dns服务器   </p>
+<p>114是电信dns作为备选dns</p>
+</li>
+<li><p>配置vpn的用户和密码    /etc/ppp/chap-secrets</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Secrets for authentication using CHAP</span><br><span class="line"># client        server  secret                  IP addresses</span><br><span class="line">用户名 pptpd 密码 *</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>每一行代表一个用户</p>
+</li>
+<li><p>每一行由四个部分组成。第一个是用户名，第二个（上图为pptpd）表示vpn的类型，第三个是密码，第四个(上图为*) 表示动态分配vpn的ip</p>
+</li>
+</ul>
+</li>
+<li><p>重启pptpd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/pptpd restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/sysctl.conf</p>
+<p>删除这一行的注释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure>
+
+<p>然后使配置生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p</span><br><span class="line">/etc/init.d/procps restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置路由表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#以下是设置nat转发</span><br><span class="line">iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o 虚拟机的nat网卡名(比如ens33或者eth0) -j MASQUERADE</span><br><span class="line"></span><br><span class="line">#以下是设置双网卡默认路由</span><br><span class="line">route add -net 202.202.32.0/20 gw 桥接网卡的网关ip(172开头的)</span><br><span class="line">route add -net 172.16.0.0/12 gw 桥接网卡的网关ip(172开头的)</span><br><span class="line">route add -net 172.32.0.0/15 gw 桥接网卡的网关ip(172开头的)</span><br><span class="line">route add -net 211.83.208.0/20 gw 桥接网卡的网关ip(172开头的)</span><br><span class="line">route add -net 222.177.140.0/25 gw 桥接网卡的网关ip(172开头的)</span><br><span class="line">route add -net 219.153.62.64/26 gw 桥接网卡的网关ip(172开头的)</span><br><span class="line">route add -net 10.10.10.0/24 gw 桥接网卡的网关ip(172开头的)</span><br></pre></td></tr></table></figure>
+
+<p>虚拟机nat网卡和桥接网卡的网关ip可以通过ifconfig查看</p>
+<p>注意：本路由表不是永久的，关机即灭失，每次开机需要重新运行。</p>
+</li>
+<li><p>配置pptpd开机自启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable pptpd.service</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ufw防火墙添加端口</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ufw allow 1723/tcp</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>如上配置完就应该可以访问拨号了。</p>
+</li>
+<li><p>访问的方式为：</p>
+<p>pptp拨号，无加密，服务器地址：桥接网卡的ip，用户名和密码为/etc/ppp/chap-secret   里写的</p>
+<p>连接pptpd前请确保能够ping通桥接网卡ip</p>
+</li>
+</ul>
+<h1 id="自动化"><a href="#自动化" class="headerlink" title="自动化"></a>自动化</h1><ul>
+<li><p>需要实现的</p>
+<ul>
+<li>开机自动设置路由表</li>
+<li>检测外部网络变化，如果网络不通则重启(如我的物理机网络从netkeeper变为wifi，那么虚拟机的外网访问可能会出问题，需要重启)</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>参照<a href="https://www.cnblogs.com/airdot/p/9688530.html" target="_blank" rel="noopener">ubuntu18.04开机自启动脚本</a></p>
+</li>
+<li><p>我的ping脚本</p>
+<p>大致作用是，ping <a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a>     如果ping的通说明网络没有问题，睡眠30秒。如果ping不通，说明需要重启恢复网络，那么连续ping2次，如果第二次还不通就重启。第二次通了就把计数置0并且睡眠30秒。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">count=&quot;0&quot;</span><br><span class="line">while true</span><br><span class="line">do</span><br><span class="line">        ping -c 5 -w 10 www.baidu.com</span><br><span class="line">        if [ $? != 0 ];then</span><br><span class="line">                echo &quot;target not approachable&quot;</span><br><span class="line">                count=$((count+1))</span><br><span class="line">        else</span><br><span class="line">                count=&quot;0&quot;</span><br><span class="line">                sleep 30</span><br><span class="line">        fi</span><br><span class="line">        if [ $count = &quot;2&quot; ]; then</span><br><span class="line">                reboot</span><br><span class="line">        fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><ul>
+<li><p>连wifi拨号，适用移动类设备(手机，平板），笔记本，台式机</p>
+<ul>
+<li>连接CQUPT或者其他接入内网的wifi</li>
+<li>vpn  类型设为pptp     服务器地址为上面提及的虚拟机桥接网卡ip    用户名密码见上面配置。如果配置pptpd的时候设置了加密（见上文），那么客户端也需要设置加密。否则不要设置 <ul>
+<li>注，CQUPT这个热点校园内很多地方都有，但是连上了之后可能暂时无法拨号，这种情况下需要等一段时间(几分钟)或者重新连接。只要搜得到CQUPT并且连的上，那么就一定可以拨pptp。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>网线拨号，使用笔记本，台式机</p>
+<ul>
+<li>用网线接入内网</li>
+<li>vpn拨号同上</li>
+</ul>
+</li>
+<li><p>路由器拨号</p>
+<ul>
+<li>连上路由器，进入管理员界面，tp-link的为网络参数页，其他的试试找一下wan口设置。设置为pptp拨号，拨号方式参考上面。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/29/nextcloud部署/" rel="next" title="nextcloud部署">
+                <i class="fa fa-chevron-left"></i> nextcloud部署
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/10/28/云筏容器云测评/" rel="prev" title="云筏容器云测评">
+                云筏容器云测评 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">oakseed</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/oakseed" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:leaftogo@hotmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建步骤"><span class="nav-number">2.</span> <span class="nav-text">搭建步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动化"><span class="nav-number">3.</span> <span class="nav-text">自动化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">4.</span> <span class="nav-text">使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">oakseed</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
