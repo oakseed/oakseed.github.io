@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.levas.top/"/>
-  <updated>2021-03-07T15:59:51.762Z</updated>
+  <updated>2021-03-23T14:22:49.786Z</updated>
   <id>http://blog.levas.top/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>搜索逻辑</title>
+    <link href="http://blog.levas.top/2021/03/23/%E6%90%9C%E7%B4%A2%E9%80%BB%E8%BE%91/"/>
+    <id>http://blog.levas.top/2021/03/23/搜索逻辑/</id>
+    <published>2021-03-23T13:45:48.000Z</published>
+    <updated>2021-03-23T14:22:49.786Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="搜索流程"><a href="#搜索流程" class="headerlink" title="搜索流程"></a>搜索流程</h1><ul><li><p>搜索表格（type）：文件夹</p><ul><li><p>仅对name字段搜索</p></li><li><p>结果过滤</p><ul><li><p>对短路径文件夹及其子文件夹的过滤：</p><ul><li><p>该过滤由下向上执行</p></li><li><p>具体规则：短路径文件夹得分满足以下规则之一的，覆盖对应长路径文件夹</p><ul><li>短路径文件夹得分高于长路径文件夹的</li><li>短路径文件夹得分超过阈值的</li></ul></li><li><p>数据结构实现</p><ul><li><p>仅对name字段搜索</p></li><li><p>搜索结果取path，name，depth，id</p></li><li><p>搜索结果按depth排序</p></li></ul></li></ul></li></ul></li></ul></li></ul><p>to be continued</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;搜索流程&quot;&gt;&lt;a href=&quot;#搜索流程&quot; class=&quot;headerlink&quot; title=&quot;搜索流程&quot;&gt;&lt;/a&gt;搜索流程&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;搜索表格（type）：文件夹&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;仅对name字段搜索&lt;/p&gt;
+&lt;/li&gt;
+&lt;
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>文本搜索引擎设计</title>
